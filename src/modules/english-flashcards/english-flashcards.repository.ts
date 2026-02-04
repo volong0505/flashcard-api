@@ -27,7 +27,8 @@ class GetOneDto {
 export class EnglishFlashcardsRepository {
     constructor(
         @InjectModel(EnglishFlashcard.name) private readonly model: Model<EnglishFlashcard>
-    ) { }
+    ) { 
+    }
 
     create(vocabId: string, userId: string, flashcard: EnglishFlashcardDto) {
         this.model.create({
@@ -38,9 +39,12 @@ export class EnglishFlashcardsRepository {
         })
     }
 
-
     updateSm2(flashcardId: Types.ObjectId, sm2: Fm2AlgorithmDto) {
         return this.model.findByIdAndUpdate(flashcardId, { sm2: sm2})
+    }
+
+    update() {
+        return this.model.updateMany({"sm2.state": "SENTENCE_REWRITING"}, {$set: { "sm2.state": "MEMORIZED"}})
     }
 
     findById(_id: string) {
@@ -53,7 +57,7 @@ export class EnglishFlashcardsRepository {
                 $match: {
                     userId: new Types.ObjectId(userId),
                     "sm2.nextReview": { $lte: new Date()},
-                    "sm2.state": {$ne: EnglishFlashCardStateEnum.MEMORIZED}
+                    // "sm2.state": {$ne: EnglishFlashCardStateEnum.MEMORIZED}
                 }
             },
             {

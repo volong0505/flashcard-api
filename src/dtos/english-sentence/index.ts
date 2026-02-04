@@ -6,7 +6,7 @@ export * from './get-sentence-flashcard'
 export class EnglishSentenceDto {
     sentence: string;
     translation: string;
-    words: string[];
+    wordIds: string[];
 
     progress: EnglishSenteceProgressDto;
 

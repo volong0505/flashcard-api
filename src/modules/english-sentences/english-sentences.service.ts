@@ -14,9 +14,9 @@ export class EnglishSentencesService {
         
         const userId = await this.getUserId(req)
         const params = {
-            sortField: 'createDate',
+            sortField: 'progress.date',
             userId,
-            sortOrder: 'desc',
+            sortOrder: 'asc',
             keyword: query.keyword || '',
             page: query.page,
         }
@@ -30,7 +30,11 @@ export class EnglishSentencesService {
             _id: item._id.toString(),
             sentence: item.sentence,
             translation: item.translation,
-            words: item.words
+            words: item.wordDetails.map(e => ({
+                _id: e._id.toString(),
+                word: e.word,
+                translation: e.translation
+            }))
         }));
         // Return the Word list
         return {
@@ -46,8 +50,10 @@ export class EnglishSentencesService {
     }
 
     async update(dto: EnglishSentenceUpdateDto, req) {
+        const forbiddenSet = new Set(['sentence', 'translation', 'wordIds']);
+
         const userId = await this.getUserId(req);
-        
+        if (!forbiddenSet.has(dto.update.key)) return
         const sentence = await this.repository.update(dto, userId);
         return sentence
     }
@@ -65,11 +71,19 @@ export class EnglishSentencesService {
             _id: result._id.toString(),
             sentence: result.sentence,
             translation: result.translation,
-            words: result.words
         }
     }
 
-    async updateSentenceFlashcard(_id: string, userId: string) {
-        return await this.repository.updateProgress(_id, userId)
+    async getSentencesByWordId(wordId: string, usedId: string): Promise<GetSentenceFlashcardResponse[]> {
+        const raw = await this.repository.findByWordIs(wordId, usedId);
+        return raw.map(e => ({
+            _id: e._id.toString(),
+            sentence: e.sentence,
+            translation: e.translation,
+        }))
+    }
+
+    async updateSentenceFlashcard(_id: string) {
+        return await this.repository.updateProgress(_id)
     }
 }

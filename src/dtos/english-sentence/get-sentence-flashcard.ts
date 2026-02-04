@@ -1,10 +1,10 @@
 export class GetSentenceFlashcardRequest {
-    userId: string
+    userId: string;
+    wordId: string
 }
 
 export class GetSentenceFlashcardResponse {
     _id: string;
-    words: string[];
     sentence: string;
     translation: string;
 }

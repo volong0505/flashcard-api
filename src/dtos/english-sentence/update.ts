@@ -1,6 +1,7 @@
 export class EnglishSentenceUpdateDto {
     _id: string;
     update: {
-        [key: string]: string | string[];
+        key: string;
+        value: string | string[]
     }
 }

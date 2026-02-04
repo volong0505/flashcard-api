@@ -4,6 +4,7 @@ import { EnglishDictionariesController } from './english-dictionaries.controller
 import { MongooseModule } from '@nestjs/mongoose';
 import { EnglishDictionary, EnglishDictionarySchema } from 'src/database';
 import { EnglishDictionariesRepository } from './english-dictionaries.repository';
+import { EnglishSentencesModule } from '../english-sentences/english-sentences.module';
 
 @Module({
   imports: [
@@ -11,7 +12,8 @@ import { EnglishDictionariesRepository } from './english-dictionaries.repository
       {
         name: EnglishDictionary.name, schema: EnglishDictionarySchema
       }
-    ])
+    ]),
+    EnglishSentencesModule
   ],
   providers: [EnglishDictionariesService, EnglishDictionariesRepository],
   controllers: [EnglishDictionariesController]

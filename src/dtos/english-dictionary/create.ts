@@ -7,4 +7,5 @@ export class EnglishDictionaryCreateDto {
     ipa?: string;
     level?: string;
     category?: string; // part of speech and more: idiom, structure .v.v
+    topics?: string[]
 }

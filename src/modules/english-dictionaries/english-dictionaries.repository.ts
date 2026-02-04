@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model, Types } from "mongoose";
-import { EnglishDictionary } from "src/database";
+import { EnglishDictionary, EnglishFlashcard, EnglishSentence } from "../../database";
 import { EnglishDictionaryCreateDto} from '../../dtos';
 
 @Injectable()
@@ -19,6 +19,7 @@ export class EnglishDictionariesRepository {
             usageNote: dto.usageNote,
             ipa: dto.ipa,
             level: dto.level,
+            topics: dto.topics,
             category: dto.category,
             createDate: new Date()
         }
@@ -52,6 +53,28 @@ export class EnglishDictionariesRepository {
         return query.find().exec();
     }
 
+    async findOne(wordId: string): Promise<any> {
+        const raw = await this.model.aggregate([
+            {
+                $match: {
+                    _id: new Types.ObjectId(wordId)
+                }
+            },
+            {
+                $lookup: {
+                    from: 'englishflashcards',
+                    localField: '_id',
+                    foreignField: 'vocabularyId',
+                    as: 'flashcard'
+                }
+            },
+            {
+                $unwind: '$flashcard'
+            }
+        ])
+        return raw[0]
+    }
+
     async countTotal(params: any): Promise<number> {
         const { userId, keyword } = params;
 
@@ -68,5 +91,21 @@ export class EnglishDictionariesRepository {
 
         let query = this.model.countDocuments(conditions);
         return query.exec()
+    }
+
+    getOptions(keyword: string, userId: string) {
+
+        const conditions: any = {
+            userId: new Types.ObjectId(userId),
+        }
+
+        if (keyword) {
+            conditions['$or'] = [
+                { word: { $regex: keyword, $options: 'i' } },
+            ]
+        }
+
+        let query = this.model.find(conditions);
+        return query.find().exec();
     }
 }

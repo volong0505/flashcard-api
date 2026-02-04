@@ -16,6 +16,11 @@ export class GetEnglishFlashcardResponse {
         sentence: string;
         translation: string
     } | null;
+    sentences?:  {
+        _id: string;
+        sentence: string;
+        translation: string
+    }[];
     cardType: string
 }
 

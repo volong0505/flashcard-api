@@ -30,6 +30,9 @@ export class EnglishDictionary implements EnglishDictionaryDto {
     level: string;
 
     @Prop()
+    topics: string[];
+
+    @Prop()
     category: string; // part of speech and more: idiom, structure .v.v
 
     @Prop()

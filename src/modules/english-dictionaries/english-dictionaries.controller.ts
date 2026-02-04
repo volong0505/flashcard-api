@@ -1,7 +1,6 @@
 import { Body, Controller, Get, Logger, Post, Query, Request} from '@nestjs/common';
 import { EnglishDictionariesService } from './english-dictionaries.service';
-import { EnglishDictionaryCreateDto, EnglishDictionaryListRequest, EnglishDictionaryListResponse} from '../../dtos';
-import { GetUser } from 'src/_decorators/get-user.decorator';
+import { EnglishDictionaryCreateDto, EnglishDictionaryDetailRequest, EnglishDictionaryDetailResponse, EnglishDictionaryGetOptionsRequest, EnglishDictionaryGetOptionsResponse, EnglishDictionaryListRequest, EnglishDictionaryListResponse} from '../../dtos';
 
 @Controller('english-dictionaries')
 export class EnglishDictionariesController {
@@ -29,5 +28,15 @@ export class EnglishDictionariesController {
     @Get('find-all')
     findAll(@Query() query: EnglishDictionaryListRequest, @Request() req): Promise<EnglishDictionaryListResponse> {
         return this.service.findAll(query, req)
+    }
+
+    @Get('find-one')
+    findOne(@Query() query: EnglishDictionaryDetailRequest, @Request() req): Promise<EnglishDictionaryDetailResponse> {
+        return this.service.findOne(query, req)
+    }
+
+    @Get('get-options')
+    getOptions(@Query() query: EnglishDictionaryGetOptionsRequest, @Request() req): Promise<EnglishDictionaryGetOptionsResponse> {
+        return this.service.getOptions(query, req)
     }
 }

@@ -6,6 +6,9 @@ import { EnglishDictionariesModule } from './modules/english-dictionaries/englis
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { EnglishFlashcardModule } from './modules/english-flashcards/english-flashcards.module';
 import { EnglishSentencesModule } from './modules/english-sentences/english-sentences.module';
+import { GoogleTtsModule } from './modules/google-tts/google-tts.module';
+import { APP_INTERCEPTOR } from '@nestjs/core';
+import { TransformInterceptor } from './_common/interceptors/transform.interceptor';
 
 
 @Module({
@@ -18,9 +21,15 @@ import { EnglishSentencesModule } from './modules/english-sentences/english-sent
     AuthModule,
     EnglishDictionariesModule,
     EnglishFlashcardModule,
-    EnglishSentencesModule
+    EnglishSentencesModule,
+    GoogleTtsModule
   ],
   controllers: [],
-  providers: [],
+  providers: [
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: TransformInterceptor,
+    },
+  ],
 })
 export class AppModule {}

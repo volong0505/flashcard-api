@@ -2,12 +2,24 @@ import { Injectable, NestInterceptor, ExecutionContext, CallHandler } from '@nes
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { BaseResponse } from '../../dtos';
+import { Reflector } from '@nestjs/core';
+import { TransformKey } from '../../_decorators/no-transform.decorator';
 
 @Injectable()
 export class TransformInterceptor<T> implements NestInterceptor<T, BaseResponse<T>> {
+  constructor(private reflector: Reflector) {}
+  
   intercept(context: ExecutionContext, next: CallHandler): Observable<BaseResponse<T>> {
     // const response = context.switchToHttp().getResponse();
+    const noTransform = this.reflector.getAllAndOverride<boolean>(TransformKey, [
+      context.getHandler(),
+      context.getClass(),
+    ]);
     
+    if (noTransform) {
+      return next.handle(); // Trả về dữ liệu gốc (Buffer)
+    }
+
     return next.handle().pipe(
       map((data) => ({
         status: data.status,

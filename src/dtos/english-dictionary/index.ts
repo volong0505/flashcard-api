@@ -1,5 +1,7 @@
 export * from './create';
 export * from './list';
+export * from './get-options';
+export * from './detail'
 
 export interface EnglishDictionaryDto {
     word: string;
@@ -12,6 +14,5 @@ export interface EnglishDictionaryDto {
     createDate: Date;
     updateDate: Date
     deleteDate: Date
-
 }
 

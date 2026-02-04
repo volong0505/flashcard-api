@@ -5,7 +5,7 @@ import { EnglishSenteceProgressDto, EnglishSentenceDto } from "src/dtos";
 export type EnglishSentenceDocument = HydratedDocument<EnglishSentence>;
 
 @Schema({})
-export class EnglishSentence implements EnglishSentenceDto {
+export class EnglishSentence {
     @Prop()
     _id: Types.ObjectId;
 
@@ -19,7 +19,7 @@ export class EnglishSentence implements EnglishSentenceDto {
     translation: string;
 
     @Prop()
-    words: string[];
+    wordIds: Types.ObjectId[];
 
     @Prop()
     progress: EnglishSenteceProgressDto;

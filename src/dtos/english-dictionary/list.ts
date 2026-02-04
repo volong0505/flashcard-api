@@ -16,6 +16,7 @@ export class EnglishDictionaryListItemDto {
     ipa!: string;
     definition: string;
     level: string;
+    topics: string[];
     category: string;
     usageNote: string;
 }
