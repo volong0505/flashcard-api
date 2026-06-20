@@ -24,8 +24,8 @@ export class GoogleTtsService {
         const request: protos.google.cloud.texttospeech.v1.ISynthesizeSpeechRequest = {
             input: { ssml },
             voice: {
-                languageCode: "en-US",
-                name: 'en-US-Wavenet-F',
+                languageCode: "en-GB",
+                name: 'en-GB-Wavenet-F',
                 ssmlGender: protos.google.cloud.texttospeech.v1.SsmlVoiceGender.NEUTRAL
             },
             audioConfig: { audioEncoding: protos.google.cloud.texttospeech.v1.AudioEncoding.MP3, speakingRate: 0.9},

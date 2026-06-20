@@ -20,7 +20,8 @@ class GetOneDto {
         level: string;
         category: string;
         usageNote: string;
-    }
+    };
+    createDate: Date
 }
 
 @Injectable()
@@ -35,7 +36,8 @@ export class EnglishFlashcardsRepository {
             _id: new Types.ObjectId(),
             vocabularyId: new Types.ObjectId(vocabId),
             userId: new Types.ObjectId(userId),
-            ...flashcard
+            ...flashcard,
+            createDate: new Date()
         })
     }
 
@@ -58,6 +60,11 @@ export class EnglishFlashcardsRepository {
                     userId: new Types.ObjectId(userId),
                     "sm2.nextReview": { $lte: new Date()},
                     // "sm2.state": {$ne: EnglishFlashCardStateEnum.MEMORIZED}
+                }
+            },
+            {
+                $sort : {
+                    createDate : -1
                 }
             },
             {

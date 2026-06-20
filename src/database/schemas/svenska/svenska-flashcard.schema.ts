@@ -1,12 +1,11 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { HydratedDocument, Types } from "mongoose";
-import { Fm2AlgorithmDto, FlashcardHistoryDto } from "../../_shared";
-import { EnglishFlashcardDto } from "../../dtos";
+import { FlashcardHistoryDto, Fm2AlgorithmDto } from "../../../_shared";
 
-export type EnglishFlashcardDocument = HydratedDocument<EnglishFlashcard>;
+export type SvenskaFlashcardDocument = HydratedDocument<SvenskaFlashcard>
 
 @Schema({})
-class EnglishFlashcardFm2Schema implements Fm2AlgorithmDto {
+class SvenskaFlashcardFm2Schema implements Fm2AlgorithmDto {
     @Prop()
     easeFactor: number;
     @Prop()
@@ -17,7 +16,6 @@ class EnglishFlashcardFm2Schema implements Fm2AlgorithmDto {
     state: string;
     @Prop()
     nextReview: Date;
- 
 }
 
 @Schema({})
@@ -31,7 +29,7 @@ class FlashcardHistorySchema implements FlashcardHistoryDto {
 }
 
 @Schema({})
-export class EnglishFlashcard implements EnglishFlashcardDto {
+export class SvenskaFlashcard {
 
     @Prop()
     _id: Types.ObjectId;
@@ -45,17 +43,14 @@ export class EnglishFlashcard implements EnglishFlashcardDto {
     @Prop()
     cardType: string;
 
-    @Prop({type: EnglishFlashcardFm2Schema})
-    sm2: EnglishFlashcardFm2Schema;
+    @Prop({type: SvenskaFlashcardFm2Schema})
+    sm2: SvenskaFlashcardFm2Schema;
 
     @Prop({type: [FlashcardHistorySchema]})
     history: FlashcardHistorySchema[];
 
     @Prop()
     lastReview: Date;
-
-    @Prop()
-    createDate: Date;
 }
 
-export const EnglishFlashcardSchema = SchemaFactory.createForClass(EnglishFlashcard)
+export const SvenskaFlashcardSchema = SchemaFactory.createForClass(SvenskaFlashcard)

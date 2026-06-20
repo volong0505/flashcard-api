@@ -2,7 +2,8 @@ import { FlashcardHistoryDto, Fm2AlgorithmDto } from "../../_shared";
 
 export interface EnglishFlashcardDto {
     sm2: Fm2AlgorithmDto;
-    history: FlashcardHistoryDto[]
+    history: FlashcardHistoryDto[];
+    createDate: Date
 }
 
 export enum EnglishFlashCardStateEnum {

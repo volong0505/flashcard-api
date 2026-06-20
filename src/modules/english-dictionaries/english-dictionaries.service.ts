@@ -3,7 +3,7 @@ import { EnglishDictionaryCreateDto, EnglishDictionaryDetailRequest, EnglishDict
 import { EnglishDictionariesRepository } from './english-dictionaries.repository';
 import { AuthService } from '../auth/auth.service';
 import { EventEmitter2 } from '@nestjs/event-emitter';
-import { ENGLISH_DICTIONARY_EVENTS, EnglishDictionaryCreatedEvent } from 'src/_shared';
+import { ENGLISH_DICTIONARY_EVENTS, EnglishDictionaryCreatedEvent } from '../../_shared';
 import { EnglishSentencesService } from '../english-sentences/english-sentences.service';
 @Injectable()
 export class EnglishDictionariesService {
@@ -55,6 +55,9 @@ export class EnglishDictionariesService {
             this.repository.findOne(query._id),
             this.sentenceService.getSentencesByWordId(query._id, user._id)
         ])
+
+        const relatedWords = await this.getRelatedWords(word.word, user._id)
+
         return {
             dictionary: {
                 _id: word._id.toString(),
@@ -67,6 +70,7 @@ export class EnglishDictionariesService {
                 usageNote: word.usageNote,
                 createAt: word.createDate,
             },
+            relatedWords,
             sentences: sentences.map(e => ({
                 _id: e._id.toString(),
                 sentence:   e.sentence,
@@ -108,5 +112,15 @@ export class EnglishDictionariesService {
             }))
         }
     }
-   
+
+    async getRelatedWords(word: string, userId: string) {
+        const raw = await this.repository.findRelatedWords(word, userId);
+
+        return raw.map(e => ({
+            _id: e._id.toString(),
+            word: e.word,
+            translation: e.translation,
+            category: e.category
+        }))
+    }
 }

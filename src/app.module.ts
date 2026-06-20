@@ -9,6 +9,7 @@ import { EnglishSentencesModule } from './modules/english-sentences/english-sent
 import { GoogleTtsModule } from './modules/google-tts/google-tts.module';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { TransformInterceptor } from './_common/interceptors/transform.interceptor';
+import { EnglishStructuresModule } from './modules/english-structures/english-structures.module';
 
 
 @Module({
@@ -22,6 +23,7 @@ import { TransformInterceptor } from './_common/interceptors/transform.intercept
     EnglishDictionariesModule,
     EnglishFlashcardModule,
     EnglishSentencesModule,
+    EnglishStructuresModule,
     GoogleTtsModule
   ],
   controllers: [],
