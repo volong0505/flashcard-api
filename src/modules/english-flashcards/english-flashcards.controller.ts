@@ -8,7 +8,7 @@ export class EnglishFlashcardController {
     constructor(private readonly service: EnglishFlashcardService) {}
 
     @Get('flashcard')
-    async getFlashcard(@Query() params: GetEnglishFlashcardRequest, @Request() request, @Req() req: any): Promise<GetEnglishFlashcardResponse> {
+    async getFlashcard(@Query() params: GetEnglishFlashcardRequest, @Request() request, @Req() req: any): Promise<GetEnglishFlashcardResponse | null> {
         const [result, nextReview] = await this.service.getFlashcard(params, request);
         req.message = 'next review: ' + nextReview
         return result

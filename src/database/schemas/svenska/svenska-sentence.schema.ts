@@ -1,11 +1,10 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { HydratedDocument, Types } from "mongoose";
-import { EnglishSenteceProgressDto } from "src/dtos";
 
-export type EnglishSentenceDocument = HydratedDocument<EnglishSentence>;
+export type SvenskaSentenceDocument = HydratedDocument<SvenskaSentence>;
 
 @Schema({})
-export class EnglishSentence {
+export class SvenskaSentence {
     @Prop()
     _id: Types.ObjectId;
 
@@ -21,8 +20,6 @@ export class EnglishSentence {
     @Prop()
     wordIds: Types.ObjectId[];
 
-    @Prop()
-    progress: EnglishSenteceProgressDto;
 
     @Prop()
     createDate: Date;
@@ -34,4 +31,4 @@ export class EnglishSentence {
     deleteDate: Date
 }
 
-export const EnglishSentenceSchema = SchemaFactory.createForClass(EnglishSentence)
+export const SvenskaSentenceSchema = SchemaFactory.createForClass(SvenskaSentence)

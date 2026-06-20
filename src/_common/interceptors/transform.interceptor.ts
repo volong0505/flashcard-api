@@ -22,7 +22,7 @@ export class TransformInterceptor<T> implements NestInterceptor<T, BaseResponse<
 
     return next.handle().pipe(
       map((data) => ({
-        status: data.status,
+        status: data?.status,
         message: data?.message,
         data: data?.result || data, // Tùy biến tùy theo cách bạn trả về từ service
         timestamp: new Date().toISOString(),

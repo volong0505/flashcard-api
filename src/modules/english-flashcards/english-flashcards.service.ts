@@ -23,12 +23,13 @@ export class EnglishFlashcardService {
                 state: EnglishFlashCardStateEnum.NEW,
                 nextReview: new Date()
             },
-            history: []
+            history: [],
+            createDate: new Date()
         }
         return this.repository.create(vocabId, userId, flashcard)
     }
 
-    async getFlashcard(params: GetEnglishFlashcardRequest, req): Promise<[GetEnglishFlashcardResponse, string]> {
+  async getFlashcard(params: GetEnglishFlashcardRequest, req): Promise<[GetEnglishFlashcardResponse, string]> {
         let nextReview;
         const cookie = req.cookies['access_token'];
         const { user } = await this.service.verifyToken(cookie);
@@ -42,6 +43,8 @@ export class EnglishFlashcardService {
         }
 
         const flashcard = await this.repository.getFlashcard(user._id);
+
+        if (!flashcard) return [{} as GetEnglishFlashcardResponse , nextReview]
 
         if (flashcard.sm2.state == EnglishFlashCardStateEnum.SENTENCE_REWRITING || flashcard.sm2.state == EnglishFlashCardStateEnum.MEMORIZED ) {
             const sentence = await this.sentenceService.getNextSentence({ wordId: flashcard.vocabularyId.toString(), userId: user._id});
@@ -83,7 +86,7 @@ export class EnglishFlashcardService {
         return [result, nextReview]
     }
 
-    async updateFlashcard(params: GetEnglishFlashcardRequest, userId: string) {
+     async updateFlashcard(params: GetEnglishFlashcardRequest, userId: string) {
         const { flashcardId, qualityNumber = 3} = params;
         if (!flashcardId) return;
         
@@ -113,54 +116,55 @@ export class EnglishFlashcardService {
                 case 1:
                     interval = 0; // học tiếp vào 5p nữa
                     // state = EnglishFlashCardStateEnum.RECOGNITION; // tiếp tục RECOGNITION state
-                    easeFactor = Math.max(ENGLISH_FLASHCARD_CONFIG.MIN_EASE, easeFactor - 20); // Phạt Ease
+                    easeFactor = ENGLISH_FLASHCARD_CONFIG.MIN_EASE  //Phạt Ease
                     repetition = 0;
                     break;
 
                 case 2:
                     interval = 1; // Nhắc lại vào ngày mai
                     // state = EnglishFlashCardStateEnum.RECOGNITION; // Quay lại giai đoạn học
-                    easeFactor = Math.max(ENGLISH_FLASHCARD_CONFIG.MIN_EASE, easeFactor - 15);
+                    easeFactor = ENGLISH_FLASHCARD_CONFIG.MIN_EASE
                     repetition++;
                     break;
 
                 case 3:
-                   repetition += 1;
+                    repetition++;
+                    easeFactor += 25;
                     if (repetition === 1) {
-                      interval = 1;
+                        interval = 1;
                     } else if (repetition === 2) {
-                      interval = 6;
+                        interval = 2;
                     } else {
-                    const bonus = 1.0;                  
-                    interval = Math.round(interval * (easeFactor / 100) * bonus);
+                        const bonus = 1.0;
+                        interval = Math.round(interval * (easeFactor / 100) * bonus);
                     }
                     break;
                 case 4: // GOOD - nhớ bình thường
                     state = EnglishFlashCardStateEnum.MEMORIZED
-                    easeFactor += 15;
-                    repetition += 1;
+                    easeFactor += 50;
+                    repetition++;
                     if (repetition === 1) {
-                      interval = 1;
+                        interval = 1;
                     } else if (repetition === 2) {
-                      interval = 6;
-                    } else {    
-                    const bonus = 1.3;                
-                    interval = Math.round(interval * (easeFactor / 100) * bonus);
+                        interval = 4;
+                    } else {
+                        const bonus = 1.3;
+                        interval = Math.round(interval * (easeFactor / 100) * bonus);
                     }
                     break;
             }
         }
 
-        console.log(easeFactor)
         // Tính nextReview 
         const nextReview = new Date();
         if (interval == 0) nextReview.setMinutes(now.getMinutes() + 5);
-        else nextReview.setDate(now.getDate() + interval)
+        else nextReview.setDate(now.getDate() + interval);
 
         const newSm2: Fm2AlgorithmDto = {
             interval, easeFactor, repetition, state, nextReview
         }
-        Logger.log(nextReview   )
+
+        Logger.log(nextReview)
         await this.repository.updateSm2(flashcard._id, newSm2);
         return nextReview
     }

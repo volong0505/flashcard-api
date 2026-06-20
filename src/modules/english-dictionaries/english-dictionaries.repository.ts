@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model, Types } from "mongoose";
-import { EnglishDictionary, EnglishFlashcard, EnglishSentence } from "../../database";
+import { EnglishDictionary } from "../../database";
 import { EnglishDictionaryCreateDto} from '../../dtos';
 
 @Injectable()
@@ -107,5 +107,15 @@ export class EnglishDictionariesRepository {
 
         let query = this.model.find(conditions);
         return query.find().exec();
+    }
+
+    async findRelatedWords(word: string, userId): Promise<EnglishDictionary[]>{
+        const keyword = word.length > 5 ? word.slice(0, -3) : word.slice(0, 3);
+
+        const conditions: any = {
+            userId: new Types.ObjectId(userId),
+            word: { $regex: keyword, $options: 'i', $ne: word},
+        }
+        return this.model.find(conditions);
     }
 }
