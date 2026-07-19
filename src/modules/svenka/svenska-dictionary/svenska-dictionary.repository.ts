@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
-import { SvenskaDictionary } from "../../database/schemas/svenska";
+import { SvenskaDictionary } from "../../../database/schemas/svenska";
 import { Model, Types } from "mongoose";
 
 @Injectable()

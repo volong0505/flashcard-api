@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { AuthService } from '../auth/auth.service';
-import { EnglishSentenceCreateDto, EnglishSentenceItemDto, EnglishSentenceListRequest, EnglishSentenceListResponse, EnglishSentenceUpdateDto, GetSentenceFlashcardResponse, GetSentenceFlashcardRequest } from '../../dtos';
+import { AuthService } from '../../auth/auth.service';
+import { EnglishSentenceCreateDto, EnglishSentenceItemDto, EnglishSentenceListRequest, EnglishSentenceListResponse, EnglishSentenceUpdateDto, GetSentenceFlashcardResponse, GetSentenceFlashcardRequest } from '../../../dtos';
 import { EnglishSentencesRepository } from './english-sentences.repository';
 
 @Injectable()

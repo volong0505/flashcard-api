@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { EnglishStructuresRepository } from './english-structures.repository';
-import { AuthService } from '../auth/auth.service';
+import { AuthService } from '../../../modules/auth/auth.service';
 
 @Injectable()
 export class EnglishStructuresService {

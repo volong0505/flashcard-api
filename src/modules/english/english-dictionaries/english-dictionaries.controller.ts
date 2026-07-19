@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Logger, Post, Query, Request} from '@nestjs/common';
 import { EnglishDictionariesService } from './english-dictionaries.service';
-import { EnglishDictionaryCreateDto, EnglishDictionaryDetailRequest, EnglishDictionaryDetailResponse, EnglishDictionaryGetOptionsRequest, EnglishDictionaryGetOptionsResponse, EnglishDictionaryListRequest, EnglishDictionaryListResponse} from '../../dtos';
+import { EnglishDictionaryCreateDto, EnglishDictionaryDetailRequest, EnglishDictionaryDetailResponse, EnglishDictionaryGetOptionsRequest, EnglishDictionaryGetOptionsResponse, EnglishDictionaryListRequest, EnglishDictionaryListResponse} from '../../../dtos';
 
 @Controller('english-dictionaries')
 export class EnglishDictionariesController {

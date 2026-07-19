@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { SvenskaSentenceRepository } from './svenska-sentence.repository';
-import { AuthService } from '../auth/auth.service';
+import { AuthService } from '../../auth/auth.service';
 
 @Injectable()
 export class SvenskaSentenceService {
