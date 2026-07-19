@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { EnglishSentencesController } from './english-sentences.controller';
 import { EnglishSentencesService } from './english-sentences.service';
-import { EnglishSentence, EnglishSentenceSchema } from '../../database';
+import { EnglishSentence, EnglishSentenceSchema } from '../../../database';
 import { MongooseModule } from '@nestjs/mongoose';
 import { EnglishSentencesRepository } from './english-sentences.repository';
 

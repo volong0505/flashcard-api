@@ -1,9 +1,9 @@
 import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model, Types } from "mongoose";
-import { EnglishFlashcard } from "../../database";
-import {  EnglishFlashcardDto, EnglishFlashCardStateEnum } from "../../dtos";
-import { Fm2AlgorithmDto } from "../../_shared";
+import { EnglishFlashcard } from "../../../database";
+import {  EnglishFlashcardDto, EnglishFlashCardStateEnum } from "../../../dtos";
+import { Fm2AlgorithmDto } from "../../../_shared";
 
 class GetOneDto {
     _id: Types.ObjectId;

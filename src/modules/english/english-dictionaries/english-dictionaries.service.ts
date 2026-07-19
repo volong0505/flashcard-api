@@ -1,10 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { EnglishDictionaryCreateDto, EnglishDictionaryDetailRequest, EnglishDictionaryDetailResponse, EnglishDictionaryGetOptionsRequest, EnglishDictionaryGetOptionsResponse, EnglishDictionaryListItemDto, EnglishDictionaryListRequest, EnglishDictionaryListResponse} from '../../dtos';
+import { EnglishDictionaryCreateDto, EnglishDictionaryDetailRequest, EnglishDictionaryDetailResponse, EnglishDictionaryGetOptionsRequest, EnglishDictionaryGetOptionsResponse, EnglishDictionaryListItemDto, EnglishDictionaryListRequest, EnglishDictionaryListResponse} from '../../../dtos';
 import { EnglishDictionariesRepository } from './english-dictionaries.repository';
-import { AuthService } from '../auth/auth.service';
+import { AuthService } from '../../auth/auth.service';
 import { EventEmitter2 } from '@nestjs/event-emitter';
-import { ENGLISH_DICTIONARY_EVENTS, EnglishDictionaryCreatedEvent } from '../../_shared';
+import { ENGLISH_DICTIONARY_EVENTS, EnglishDictionaryCreatedEvent } from '../../../_shared';
 import { EnglishSentencesService } from '../english-sentences/english-sentences.service';
+
 @Injectable()
 export class EnglishDictionariesService {
     constructor(
@@ -56,7 +57,7 @@ export class EnglishDictionariesService {
             this.sentenceService.getSentencesByWordId(query._id, user._id)
         ])
 
-        const relatedWords = await this.getRelatedWords(word.word, user._id)
+        // const relatedWords = await this.getRelatedWords(word.word, user._id)
 
         return {
             dictionary: {
@@ -70,7 +71,7 @@ export class EnglishDictionariesService {
                 usageNote: word.usageNote,
                 createAt: word.createDate,
             },
-            relatedWords,
+            relatedWords: [],
             sentences: sentences.map(e => ({
                 _id: e._id.toString(),
                 sentence:   e.sentence,

@@ -2,7 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model, Types } from "mongoose";
 import { EnglishSentence } from "src/database";
-import { EnglishSentenceCreateDto, EnglishSentenceUpdateDto, GetSentenceFlashcardRequest } from '../../dtos';
+import { EnglishSentenceCreateDto, EnglishSentenceUpdateDto, GetSentenceFlashcardRequest } from '../../../dtos';
 
 @Injectable()
 export class EnglishSentencesRepository {

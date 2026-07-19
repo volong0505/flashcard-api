@@ -1,5 +1,5 @@
 import { Body, Controller, Get, Post, Put, Query, Request } from '@nestjs/common';
-import { EnglishSentenceCreateDto, EnglishSentenceListRequest, EnglishSentenceListResponse, EnglishSentenceUpdateDto } from '../../dtos';
+import { EnglishSentenceCreateDto, EnglishSentenceListRequest, EnglishSentenceListResponse, EnglishSentenceUpdateDto } from '../../../dtos';
 import { EnglishSentencesService } from './english-sentences.service';
 
 @Controller('english-sentences')

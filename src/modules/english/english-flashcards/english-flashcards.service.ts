@@ -1,9 +1,9 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { EnglishFlashcardsRepository } from './english-flashcards.repository';
-import { ENGLISH_FLASHCARD_CONFIG, EnglishFlashcardDto, EnglishFlashCardStateEnum } from '../../dtos';
-import { AuthService } from '../auth/auth.service';
-import { GetEnglishFlashcardRequest, GetEnglishFlashcardResponse } from '../../dtos/english-flashcard/get-one';
-import { Fm2AlgorithmDto } from '../../_shared';
+import { ENGLISH_FLASHCARD_CONFIG, EnglishFlashcardDto, EnglishFlashCardStateEnum } from '../../../dtos';
+import { AuthService } from '../../auth/auth.service';
+import { GetEnglishFlashcardDto, GetEnglishFlashcardRequest } from '../../../dtos/english-flashcard/get-one';
+import { Fm2AlgorithmDto } from '../../../_shared';
 import { EnglishSentencesService } from '../english-sentences/english-sentences.service';
 
 @Injectable()
@@ -29,7 +29,7 @@ export class EnglishFlashcardService {
         return this.repository.create(vocabId, userId, flashcard)
     }
 
-  async getFlashcard(params: GetEnglishFlashcardRequest, req): Promise<[GetEnglishFlashcardResponse, string]> {
+  async getFlashcard(params: GetEnglishFlashcardRequest, req): Promise<[GetEnglishFlashcardDto, string]> {
         let nextReview;
         const cookie = req.cookies['access_token'];
         const { user } = await this.service.verifyToken(cookie);
@@ -44,13 +44,13 @@ export class EnglishFlashcardService {
 
         const flashcard = await this.repository.getFlashcard(user._id);
 
-        if (!flashcard) return [{} as GetEnglishFlashcardResponse , nextReview]
+        if (!flashcard) return [{} as GetEnglishFlashcardDto , nextReview]
 
         if (flashcard.sm2.state == EnglishFlashCardStateEnum.SENTENCE_REWRITING || flashcard.sm2.state == EnglishFlashCardStateEnum.MEMORIZED ) {
             const sentence = await this.sentenceService.getNextSentence({ wordId: flashcard.vocabularyId.toString(), userId: user._id});
 
             if (sentence._id) {
-                const result: GetEnglishFlashcardResponse = {
+                const result: GetEnglishFlashcardDto = {
                 _id: flashcard._id.toString(),
                 vocabulary: null,
                 sentence: {
@@ -163,8 +163,6 @@ export class EnglishFlashcardService {
         const newSm2: Fm2AlgorithmDto = {
             interval, easeFactor, repetition, state, nextReview
         }
-
-        Logger.log(nextReview)
         await this.repository.updateSm2(flashcard._id, newSm2);
         return nextReview
     }

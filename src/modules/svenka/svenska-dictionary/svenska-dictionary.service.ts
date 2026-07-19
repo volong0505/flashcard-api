@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { AuthService } from '../auth/auth.service';
+import { AuthService } from '../../auth/auth.service';
 import { SvenskaDictionaryRepository } from './svenska-dictionary.repository';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { SvenskaSentenceService } from '../svenska-sentence/svenska-sentence.service';
