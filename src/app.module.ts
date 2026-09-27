@@ -16,7 +16,12 @@ import { EnglishStructuresModule } from './modules/english/english-structures/en
   imports: [
     EventEmitterModule.forRoot(),
     ConfigModule.forRoot({  isGlobal: true}),
-    MongooseModule.forRoot(process.env.MONGO_URI  || 'mongodb://localhost:27017'),
+    MongooseModule.forRoot(process.env.MONGO_URI  || 'mongodb://localhost:27017', {
+    family: 4,
+  maxPoolSize: 10,
+  serverSelectionTimeoutMS: 10000,
+  socketTimeoutMS: 45000,
+  heartbeatFrequencyMS: 10000,}),
 
     UsersModule,
     AuthModule,

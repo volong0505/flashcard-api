@@ -64,7 +64,7 @@ export class EnglishFlashcardsRepository {
             },
             {
                 $sort : {
-                    createDate : -1
+                    "sm2.nextReview" : 1
                 }
             },
             {
