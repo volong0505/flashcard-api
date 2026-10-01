@@ -46,24 +46,6 @@ export class EnglishFlashcardService {
 
         if (!flashcard) return [{} as GetEnglishFlashcardDto , nextReview]
 
-        if (flashcard.sm2.state == EnglishFlashCardStateEnum.SENTENCE_REWRITING || flashcard.sm2.state == EnglishFlashCardStateEnum.MEMORIZED ) {
-            const sentence = await this.sentenceService.getNextSentence({ wordId: flashcard.vocabularyId.toString(), userId: user._id});
-
-            if (sentence._id) {
-                const result: GetEnglishFlashcardDto = {
-                _id: flashcard._id.toString(),
-                vocabulary: null,
-                sentence: {
-                    _id: sentence._id.toString(),
-                    sentence: sentence.sentence,
-                    translation: sentence.translation
-                },
-                cardType: EnglishFlashCardStateEnum.SENTENCE_REWRITING
-            }
-            return [result, nextReview]
-            }
-        } 
-
         const sentences = await this.sentenceService.getSentencesByWordId(flashcard.vocabularyId.toString(), user._id);
 
         const result = {
